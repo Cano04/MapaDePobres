@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pobreza en México por entidad, 2016–2024 · Mapa interactivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Pobreza en México por entidad federativa, 2016–2024</h1>
+    <p>Mapa coroplético con datos abiertos de INEGI/CONEVAL. Elige un indicador y un año, pasa el cursor sobre un estado y haz clic para ver su detalle.</p>
+  </div>
+  <div class="controls">
+    <label>Indicador
+      <select id="ind"></select>
+    </label>
+    <label>Año
+      <select id="year"></select>
+    </label>
+  </div>
+</header>
+
+<main class="stage">
+  <div id="map" role="application" aria-label="Mapa interactivo de México por entidad federativa"></div>
+  <aside id="panel" aria-live="polite"></aside>
+</main>
+
+<section class="doc" id="hallazgos">
+  <h2>Hallazgos</h2>
+  <p class="find">El mapa muestra un gradiente norte–sur muy claro cuando se mira la intensidad de la pobreza y no solo el tamaño de los estados. En 2024, Chiapas, Guerrero, Veracruz y Oaxaca concentran 3.77 de los 6.95 millones de personas en pobreza extrema del país (54 %), y la razón de ingreso se dispara en Chiapas (37.2), Guerrero (23.4) y Oaxaca (14.3), mientras que en Nuevo León y Baja California es de apenas 0.1. El conteo absoluto de personas en pobreza, en cambio, lo encabeza el Estado de México (5.53 millones), seguido de Chiapas, Veracruz y Puebla: ahí pesa tanto la incidencia como la población, por eso conviene leer ambos indicadores juntos. Entre 2020 y 2024 la pobreza nacional bajó de 55.7 a 38.5 millones de personas y el descenso se observa en los 32 estados, pero la pobreza extrema sigue concentrada en el sur-sureste.</p>
+  <p class="note" style="margin-top:12px">Los puntos azules son universidades públicas estatales y algunas instituciones grandes (ubicación aproximada a nivel ciudad); se agrupan al alejar el mapa. La Isla Oscura, en el Pacífico al suroeste, es un elemento ficticio añadido al mapa.</p>
+</section>
+
+<section class="doc" id="investigacion" style="padding-top:0">
+  <h2>Notas de la investigación</h2>
+  <ul>
+    <li><b>Capas base.</b> Son los mapas de fondo. Aquí hay dos para alternar: OpenStreetMap y CARTO Positron (gris claro, que deja resaltar los colores del indicador). Se cambian en el control de capas.</li>
+    <li><b>Tiles.</b> La capa base se descarga en mosaicos cuadrados de 256 px con URL <code>/{z}/{x}/{y}.png</code>, donde z es el nivel de zoom y x, y la posición en la cuadrícula. Leaflet solo pide los mosaicos visibles.</li>
+    <li><b>GeoJSON.</b> Formato abierto (RFC 7946) para geometrías. Cada estado es un <i>Feature</i> de tipo Polygon o MultiPolygon (islas) con coordenadas [longitud, latitud]. La clave de unión con la tabla de datos es la clave de entidad INEGI de dos dígitos (01 a 32), derivada del código ISO 3166-2 del archivo.</li>
+    <li><b>Proyecciones.</b> El GeoJSON viene en WGS 84 (EPSG:4326, grados). Leaflet lo proyecta a Web Mercator (EPSG:3857) para dibujarlo sobre los tiles. Mercator conserva los ángulos pero exagera las áreas lejos del ecuador; en las latitudes de México (14°–33° N) la distorsión es moderada, aun así el tamaño visual de un estado no es proporcional a su población.</li>
+    <li><b>Escalas de color.</b> Para magnitudes ordenadas se usa una escala secuencial (claro = poco, oscuro = mucho; paletas tipo ColorBrewer). Los cortes son por cuantiles (5 clases con aproximadamente la misma cantidad de estados), que evita que uno o dos valores extremos como el Estado de México o Chiapas aplanen el resto; los intervalos iguales mostrarían casi todo el país en una sola clase. La leyenda indica cuántos estados caen en cada clase.</li>
+  </ul>
+</section>
+
+<footer>
+  <p><b>Fuentes.</b> Población en pobreza, moderada y extrema (miles de personas), serie 2016–2024: INEGI, Pobreza multidimensional 2024 (ENIGH 2024 con la metodología de CONEVAL; 2016–2022 de CONEVAL). Razón de ingreso: INEGI, Reporte de resultados 27/25, cuadro 16. Contornos de estados: repositorio <i>angelnmara/geojson</i> (GitHub). Mosaicos: © colaboradores de OpenStreetMap; © CARTO. Los indicadores son conteos absolutos y la razón de ingreso; los porcentajes por entidad están en los tabulados de INEGI.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>
